@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using News_Backend.Context;
+using News_Backend.Data_Access._News;
 
 namespace News_Backend
 {
@@ -16,10 +17,9 @@ namespace News_Backend
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<NewsContext>(options =>
-            {
                 options.UseSqlServer(
-                    "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=News;Integrated Security=True;");
-            })
+                    "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=News;Integrated Security=True;"));
+            builder.Services.AddSingleton<INewsDal, NewsDal>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
