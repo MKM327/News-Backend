@@ -37,12 +37,16 @@ public class EFentityRepository<TEntity,TContext>:IEFentityRepository<TEntity>
         return entity;
     }
 
-    public TEntity Update(TEntity entity)
+    public TEntity? Update(TEntity entity)
     {
         using var context = new TContext();
+        var dbEntity = context.Set<TEntity>().SingleOrDefault(_entity => _entity.Id == entity.Id);
+        if (dbEntity == null) return null!;
+        context.Entry(dbEntity).State = EntityState.Detached;
         context.Entry(entity).State = EntityState.Modified;
         context.SaveChanges();
         return entity;
+
     }
 
     public TEntity Delete(TEntity entity)
